@@ -1,28 +1,32 @@
-async function loadPhones(search) {
+const loading = document.getElementById('loading');
+async function loadPhones(search, dataLimit) {
+    loading.innerText = 'Loading.......';
     try {
         const url = `https://openapi.programming-hero.com/api/phones?search=${search}`
         const res = await fetch(url);
         const phones = await res.json();
-        displayPhones(phones.data);
+        displayPhones(phones.data, dataLimit);
+        loading.innerText = ''
     }
     catch (err) {
-        console.log(err)
+        console.log(err);
     }
 };
-const displayPhones = (phones) => {
+const displayPhones = (phones, dataLimit) => {
     const error = document.getElementById('error');
     if (phones.length < 1) {
         error.innerText = 'Something went wrong. Please try again.'
+        loading.innerText = '';
     } else {
         error.innerText = '';
     }
 
     const seeMore = document.getElementById('see-more');
-    if (phones.length > 20) {
-        phones = phones.slice(0, 20);
+    if (dataLimit && phones.length > 10) {
+        phones = phones.slice(0, 10);
         seeMore.classList.remove('d-none');
 
-    } else {
+    } else {    
         seeMore.classList.add('d-none');
     }
 
@@ -44,13 +48,29 @@ const displayPhones = (phones) => {
         </div>
         `;
         phoneContainer.appendChild(phoneDiv);
+        loading.innerText = '';
         i++;
     }
 }
-document.getElementById('search-btn').addEventListener('click', () => {
+
+function process(dataLimit){
+    loading.innerText = 'Loading.......';
     const searchField = document.getElementById('search-field');
     const searchText = searchField.value;
-    loadPhones(searchText);
+    loadPhones(searchText, dataLimit);
+}
+
+document.getElementById('search-btn').addEventListener('click', () => {
+    process(10);
 })
-// loadPhones('samsung');
+
+document.getElementById('see-more').addEventListener('click', function(){
+    process();
+})
+
+
+
+
+
+loadPhones('samsung');
 
