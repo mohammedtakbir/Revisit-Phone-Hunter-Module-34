@@ -1,5 +1,5 @@
-async function loadPhones() {
-    const url = `https://openapi.programming-hero.com/api/phones?search=samsung`
+async function loadPhones(search) {
+    const url = `https://openapi.programming-hero.com/api/phones?search=${search}`
     const res = await fetch(url);
     const phones = await res.json();
     displayPhones(phones.data);
@@ -7,9 +7,9 @@ async function loadPhones() {
 const displayPhones = (phones) => {
     let i = 0;
     const phoneContainer = document.getElementById('phone-container');
+    phoneContainer.textContent = '';
     while (i < phones.length) {
         const phone = phones[i];
-        console.log(phone);
         const { image, brand, phone_name, slug } = phone;
         const phoneDiv = document.createElement('div');
         phoneDiv.classList.add('col');
@@ -26,5 +26,10 @@ const displayPhones = (phones) => {
         i++;
     }
 }
+document.getElementById('search-btn').addEventListener('click', () => {
+    const searchField = document.getElementById('search-field');
+    const searchText = searchField.value;
+    loadPhones(searchText);
+})
+loadPhones('samsung');
 
-loadPhones();
