@@ -46,7 +46,14 @@ const displayPhones = (phones, dataLimit) => {
                 <h5 class="card-title">${phone_name}</h5>
             </div>
             <div class="d-flex justify-content-center">
-                <button onclick="loadPhoneDetails('${slug}')" class="btn btn-secondary">Details</button>
+                <button 
+                    onclick="loadPhoneDetails('${slug}')" 
+                    class="btn btn-secondary" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#phoneDetailsModal"
+                >
+                    Details
+                </button>
             </div>
         </div>
         `;
@@ -83,7 +90,13 @@ const loadPhoneDetails = async phone => {
     displayPhoneDetails(phoneDetail.data)
 }
 const displayPhoneDetails = detail => {
-    console.log(detail)
+    const { name, releaseDate } = detail;
+    const title = document.getElementById('phoneDetailsModalLabel');
+    title.innerText = name;
+    const phoneBody = document.getElementById('phone-detail-body');
+    phoneBody.innerHTML = `
+        <p>${releaseDate}</p>
+    `;
 }
 
 
