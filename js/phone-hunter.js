@@ -19,16 +19,16 @@ const displayPhones = (phones, dataLimit) => {
         loading.innerText = '';
     } else {
         error.innerText = '';
-    }
+    };
 
     const seeMore = document.getElementById('see-more');
     if (dataLimit && phones.length > 10) {
         phones = phones.slice(0, 10);
         seeMore.classList.remove('d-none');
 
-    } else {    
+    } else {
         seeMore.classList.add('d-none');
-    }
+    };
 
     let i = 0;
     const phoneContainer = document.getElementById('phone-container');
@@ -45,30 +45,46 @@ const displayPhones = (phones, dataLimit) => {
                 <h4 class="card-title">${brand}</h4>
                 <h5 class="card-title">${phone_name}</h5>
             </div>
+            <div class="d-flex justify-content-center">
+                <button onclick="loadPhoneDetails('${slug}')" class="btn btn-secondary">Details</button>
+            </div>
         </div>
         `;
         phoneContainer.appendChild(phoneDiv);
         loading.innerText = '';
         i++;
-    }
-}
+    };
+};
 
-function process(dataLimit){
+function process(dataLimit) {
     loading.innerText = 'Loading.......';
     const searchField = document.getElementById('search-field');
     const searchText = searchField.value;
     loadPhones(searchText, dataLimit);
-}
+};
 
 document.getElementById('search-btn').addEventListener('click', () => {
     process(10);
+});
+
+document.getElementById('search-field').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+        process(10);
+    }
 })
 
-document.getElementById('see-more').addEventListener('click', function(){
+document.getElementById('see-more').addEventListener('click', function () {
     process();
-})
+});
 
-
+const loadPhoneDetails = async phone => {
+    const res = await fetch(`https://openapi.programming-hero.com/api/phone/${phone}`)
+    const phoneDetail = await res.json();
+    displayPhoneDetails(phoneDetail.data)
+}
+const displayPhoneDetails = detail => {
+    console.log(detail)
+}
 
 
 
