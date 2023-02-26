@@ -1,10 +1,31 @@
 async function loadPhones(search) {
-    const url = `https://openapi.programming-hero.com/api/phones?search=${search}`
-    const res = await fetch(url);
-    const phones = await res.json();
-    displayPhones(phones.data);
+    try {
+        const url = `https://openapi.programming-hero.com/api/phones?search=${search}`
+        const res = await fetch(url);
+        const phones = await res.json();
+        displayPhones(phones.data);
+    }
+    catch (err) {
+        console.log(err)
+    }
 };
 const displayPhones = (phones) => {
+    const error = document.getElementById('error');
+    if (phones.length < 1) {
+        error.innerText = 'Something went wrong. Please try again.'
+    } else {
+        error.innerText = '';
+    }
+
+    const seeMore = document.getElementById('see-more');
+    if (phones.length > 20) {
+        phones = phones.slice(0, 20);
+        seeMore.classList.remove('d-none');
+
+    } else {
+        seeMore.classList.add('d-none');
+    }
+
     let i = 0;
     const phoneContainer = document.getElementById('phone-container');
     phoneContainer.textContent = '';
@@ -31,5 +52,5 @@ document.getElementById('search-btn').addEventListener('click', () => {
     const searchText = searchField.value;
     loadPhones(searchText);
 })
-loadPhones('samsung');
+// loadPhones('samsung');
 
