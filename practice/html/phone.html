@@ -15,7 +15,13 @@
         <header>
             <h1 class="text-center my-4">Welcome to Phone Hunter Practice!!!</h1>
         </header>
-        <section id="phone-container" class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="my-4 d-flex w-50 mx-auto">
+            <input id="search-field" type="text" class="form-control me-2" placeholder="Search Your Phone Here...">
+            <button id="search-btn" class="btn btn-secondary">Search</button>
+        </div>
+        <p id="error" class="d-none text-center text-danger">Something went wrong. please try again.</p>
+        <h3 id="loading" class="d-none text-center">Loading.........</h3>
+        <section id="phone-container" class="row row-cols-1 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 g-4">
             
         </section>
     </div>
